@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Feid</title>
+  <title>Mobile Legends Interface</title>
   <!-- Fuentes de estilo futurista, gaming y digital -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700;800&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700;800&family=Teko:wght@600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     /* =========================================
        RESET Y CONTENEDOR ESCALABLE (16:9)
@@ -73,7 +73,6 @@
       overflow: hidden;
     }
 
-    /* Capas para el fondo desaturado con efecto Glitch */
     .glitch-backdrop {
       position: absolute;
       inset: 0;
@@ -93,11 +92,9 @@
                   url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/af8ed861-a1e7-4979-9745-4a3618ed836c/dmn976s-1511ea17-4084-4659-84bb-8833b934b77a.png/v1/fill/w_1191,h_671,q_70,strp/doctor_doom_wallpaper_6_by_vib16_dmn976s-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi9hZjhlZDg2MS1hMWU3LTQ5NzktOTc0NS00YTM2MThlZDgzNmMvZG1uOTc2cy0xNTExZWExNy00MDg0LTQ2NTktODRiYi04ODMzYjkzNGI3N2EucG5nIiwiaGVpZ2h0IjoiPD03MjEiLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS53YXRlcm1hcmsiXSwid21rIjp7InBhdGgiOiIvd20vYWY4ZWQ4NjEtYTFlNy00OTc5LTk3NDUtNGEzNjE4ZWQ4MzZjL3ZpYjE2LTQucG5nIiwib3BhY2l0eSI6OTUsInByb3BvcnRpb25zIjowLjQ1LCJncmF2aXR5IjoiY2VudGVyIn19.DCILEcPCeuQ6JGK2Jaf3hyRgOJcGU67tBJtNBFcp2QU');
       background-size: cover;
       background-position: center;
-      /* BAJA SATURACIÓN Y TONO OSCURO */
       filter: saturate(0.18) contrast(1.2) brightness(0.68);
     }
 
-    /* Capa de aberración cromática Cyan */
     .glitch-layer.layer-cyan {
       opacity: 0.55;
       mix-blend-mode: screen;
@@ -105,7 +102,6 @@
       animation: bgGlitchCyan 3.2s infinite steps(2, start);
     }
 
-    /* Capa de aberración cromática Roja / Magenta */
     .glitch-layer.layer-red {
       opacity: 0.45;
       mix-blend-mode: screen;
@@ -113,7 +109,6 @@
       animation: bgGlitchRed 3.8s infinite steps(2, start);
     }
 
-    /* Líneas de escaneo digital / monitor */
     .glitch-scanlines {
       position: absolute;
       inset: 0;
@@ -148,7 +143,6 @@
       76% { clip-path: inset(0 0 0 0); transform: translate(0); }
     }
 
-    /* Logo Superior */
     .logo-container {
       position: absolute;
       top: 22%;
@@ -175,7 +169,6 @@
       font-weight: 700;
     }
 
-    /* Barra de Carga */
     .loading-box {
       width: 55%;
       display: flex;
@@ -210,9 +203,6 @@
       color: rgba(255, 255, 255, 0.6);
     }
 
-    /* ========================================================
-       BOTÓN "PRESS" DIGITAL / CYBERPUNK (HUD CYBERNETIC)
-    ======================================================== */
     .btn-start {
       display: none;
       position: relative;
@@ -234,7 +224,6 @@
       animation: digitalGlitchPulse 3.5s infinite;
     }
 
-    /* Líneas de mira en las esquinas */
     .btn-start::before {
       content: "";
       position: absolute;
@@ -257,7 +246,6 @@
       border-right: 2px solid #fff;
     }
 
-    /* Efecto hover */
     .btn-start:hover {
       background: linear-gradient(135deg, rgba(0, 255, 200, 0.3) 0%, rgba(0, 120, 220, 0.95) 100%);
       color: #ffffff;
@@ -295,9 +283,6 @@
       background-position: center;
     }
 
-    /* ========================================================
-       PNG DEL PERSONAJE: RESPLANDOR + EFECTO DE FLOTAR
-    ======================================================== */
     .character-stand {
       position: absolute;
       bottom: -0%;
@@ -310,13 +295,9 @@
       background-position: bottom center;
       pointer-events: none;
       z-index: 2;
-
-      /* RESPLANDOR MÍSTICO / GLOW MULTICAPA */
       filter: drop-shadow(0 0 20px rgba(43, 216, 120, 0.65))
               drop-shadow(0 0 45px rgba(22, 140, 75, 0.45))
               drop-shadow(0 15px 30px rgba(0, 0, 0, 0.9));
-
-      /* ANIMACIÓN DE FLOTACIÓN SUAVE */
       animation: floatDoom 4.2s ease-in-out infinite alternate;
       will-change: transform, filter;
     }
@@ -341,7 +322,6 @@
       }
     }
 
-    /* Barra Superior del Lobby */
     .top-bar {
       position: absolute;
       top: 0;
@@ -395,7 +375,6 @@
       color: #fff;
     }
 
-    /* Recursos (Oro, Diamantes) */
     .resources-group {
       display: flex;
       align-items: center;
@@ -427,7 +406,6 @@
     .gold-icon { background: #e09f19; color: #3e2600; }
     .diamond-icon { background: #00c3ff; color: #00364d; }
 
-    /* Iconos del Sistema */
     .system-icons {
       display: flex;
       align-items: center;
@@ -451,7 +429,6 @@
       color: #ffde6b;
     }
 
-    /* Bocadillo de diálogo de Doom */
     .speech-bubble {
       position: absolute;
       top: 19%;
@@ -477,7 +454,6 @@
       border-color: transparent rgba(230, 240, 255, 0.92) transparent transparent;
     }
 
-    /* Menú Lateral Izquierdo */
     .lobby-sidebar-left {
       position: absolute;
       left: 1.2%;
@@ -511,7 +487,6 @@
       transform: translateX(4px);
     }
 
-    /* Barra Inferior */
     .bottom-bar {
       position: absolute;
       bottom: 0;
@@ -549,7 +524,6 @@
       transform: translateY(-2px);
     }
 
-    /* BOTÓN DERECHO INFERIOR: ABOUT */
     .classic-btn-container {
       position: relative;
       cursor: pointer;
@@ -608,7 +582,7 @@
     }
 
     /* =========================================
-       PANTALLA 3: LINKS / FRIENDS
+       PANTALLA 3: LINKS / SECCIÓN PRINCIPAL ABOUT
     ========================================= */
     #screen-3 {
       background: radial-gradient(circle at 60% 50%, rgba(10, 25, 55, 0.4) 0%, rgba(3, 7, 15, 0.9) 100%),
@@ -691,6 +665,7 @@
       padding: 1vw 1.4vw;
       text-decoration: none;
       color: #fff;
+      cursor: pointer;
       transition: all 0.25s ease;
     }
 
@@ -721,6 +696,413 @@
       border-radius: 4px;
       text-transform: uppercase;
     }
+
+    /* ========================================================
+       PANTALLA 4: SECCIÓN "FRIENDS" (SELECTOR DE HÉROES MLBB)
+    ======================================================== */
+    #screen-4 {
+      background: linear-gradient(180deg, #091a32 0%, #060e1d 100%);
+      display: flex;
+      flex-direction: column;
+      padding: 1.2vw 1.8vw;
+    }
+
+    /* Header superior del selector */
+    .friends-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 7%;
+      margin-bottom: 1.5%;
+    }
+
+    .friends-left-title {
+      display: flex;
+      align-items: center;
+      gap: 1.2vw;
+    }
+
+    .friends-back-btn {
+      background: rgba(14, 30, 58, 0.8);
+      border: 1px solid #3d6a9e;
+      color: #aed1ff;
+      border-radius: 5px;
+      padding: 0.35vw 0.9vw;
+      cursor: pointer;
+      font-size: 0.9vw;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .friends-back-btn:hover {
+      background: #1f4780;
+      color: #ffd043;
+      border-color: #ffd043;
+    }
+
+    .friends-title-text {
+      font-family: 'Teko', sans-serif;
+      font-size: 2.2vw;
+      letter-spacing: 2px;
+      color: #ffd043;
+      line-height: 1;
+    }
+
+    .friends-filters {
+      display: flex;
+      gap: 1vw;
+    }
+
+    .filter-pill {
+      background: rgba(13, 27, 50, 0.85);
+      border: 1px solid #2f5685;
+      padding: 0.3vw 1vw;
+      border-radius: 4px;
+      font-size: 0.8vw;
+      color: #8fb6e5;
+    }
+
+    /* Cuerpo con Tabs laterales y Grid de Héroes */
+    .friends-main-area {
+      display: flex;
+      height: 90%;
+      gap: 1.5vw;
+    }
+
+    /* Tabs de Roles a la izquierda */
+    .roles-sidebar {
+      width: 11%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6vh;
+    }
+
+    .role-btn {
+      background: rgba(13, 26, 48, 0.7);
+      border: 1px solid rgba(64, 114, 180, 0.35);
+      color: #8cb1df;
+      padding: 0.8vh 0.6vw;
+      font-size: 0.85vw;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .role-btn.active, .role-btn:hover {
+      background: linear-gradient(90deg, #1c4b8b 0%, #102e56 100%);
+      border-color: #00d4ff;
+      color: #fff;
+      box-shadow: inset 0 0 10px rgba(0, 212, 255, 0.4);
+    }
+
+    /* Grid de Cartas de Personajes */
+    .heroes-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 0.9vw;
+      overflow: hidden;
+    }
+
+    /* CARTA DE PERSONAJE INTERACTIVA CON BLUR Y LINK */
+    .hero-card {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1.5px solid rgba(75, 130, 200, 0.35);
+      background: #091322;
+      text-decoration: none;
+      display: block;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      cursor: pointer;
+    }
+
+    .hero-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      border-color: #00ffff;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.45);
+    }
+
+    /* IMAGEN CON COLOR ORIGINAL */
+    .hero-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: filter 0.3s ease, transform 0.3s ease;
+    }
+
+    /* AL PASAR EL MOUSE: SE DESENFOCA (BLUR) */
+    .hero-card:hover .hero-thumb {
+      filter: blur(4px) brightness(0.65);
+      transform: scale(1.08);
+    }
+
+    /* Etiqueta superior 'GRATIS' */
+    .badge-corner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: linear-gradient(135deg, #12a647 0%, #0d7030 100%);
+      color: #fff;
+      font-size: 0.65vw;
+      font-weight: 800;
+      padding: 0.15vw 1.2vw 0.15vw 0.5vw;
+      clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
+      z-index: 3;
+      letter-spacing: 0.5px;
+    }
+
+    /* Barra inferior con el nombre */
+    .hero-name-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(180deg, transparent 0%, rgba(4, 9, 18, 0.95) 75%);
+      padding: 0.5vw 0.6vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 3;
+      transition: opacity 0.2s ease;
+    }
+
+    .hero-name-bar span {
+      font-size: 0.85vw;
+      font-weight: 700;
+      color: #e5f1ff;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-icon-class {
+      width: 1vw;
+      height: 1vw;
+      background: #00c3ff;
+      border-radius: 2px;
+      display: grid;
+      place-content: center;
+      font-size: 0.65vw;
+      color: #031326;
+      font-weight: 900;
+    }
+
+    /* OVERLAY VISIBLE SÓLO EN HOVER SOBRE EL BLUR */
+    .hero-hover-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6vh;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 4;
+      background: rgba(3, 10, 20, 0.4);
+      padding: 0.8vw;
+      text-align: center;
+    }
+
+    .hero-card:hover .hero-hover-overlay {
+      opacity: 1;
+    }
+
+    .hero-hover-overlay .action-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.8vw;
+      color: #00ffff;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .hero-hover-overlay .action-btn {
+      background: linear-gradient(135deg, #ffd043 0%, #d49514 100%);
+      color: #171000;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.75vw;
+      font-weight: 800;
+      padding: 0.2vw 0.8vw;
+      border-radius: 3px;
+      text-transform: uppercase;
+      box-shadow: 0 0 10px rgba(255, 208, 67, 0.6);
+    }
+
+    /* ========================================================
+       PANTALLA 5: SECCIÓN "MUSIC" (REPRODUCTOR CYBERNETIC)
+    ======================================================== */
+    #screen-5 {
+      background: radial-gradient(circle at 50% 50%, rgba(10, 35, 60, 0.4) 0%, #040810 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2vw;
+      position: relative;
+    }
+
+    .music-player-hud {
+      width: 60%;
+      background: rgba(7, 15, 30, 0.88);
+      border: 1px solid rgba(0, 255, 255, 0.35);
+      border-radius: 12px;
+      padding: 1.8vw 2.2vw;
+      box-shadow: 0 0 40px rgba(0, 255, 255, 0.25), inset 0 0 25px rgba(0, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 1.4vh;
+      backdrop-filter: blur(12px);
+      position: relative;
+    }
+
+    .music-hud-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+      padding-bottom: 0.8vh;
+    }
+
+    .music-title-group h3 {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.2vw;
+      color: #00ffff;
+      letter-spacing: 2px;
+    }
+
+    .music-title-group span {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75vw;
+      color: #7ba2cf;
+    }
+
+    .music-close-btn {
+      background: rgba(0, 255, 255, 0.1);
+      border: 1px solid #00ffff;
+      color: #00ffff;
+      font-size: 1vw;
+      padding: 0.2vw 0.8vw;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .music-close-btn:hover {
+      background: #00ffff;
+      color: #000;
+    }
+
+    /* Visualizador de Barras de Audio */
+    .cyber-visualizer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      height: 70px;
+      gap: 4px;
+      padding: 8px 0;
+    }
+
+    .v-bar {
+      flex: 1;
+      background: linear-gradient(180deg, #00ffff 0%, #1565c0 100%);
+      border-radius: 2px;
+      height: 15%;
+      transition: height 0.15s ease;
+    }
+
+    /* Animación del ecualizador cuando suena la música */
+    .playing .v-bar:nth-child(2n) { animation: soundWaves 0.9s infinite alternate; }
+    .playing .v-bar:nth-child(3n) { animation: soundWaves 0.7s infinite alternate 0.2s; }
+    .playing .v-bar:nth-child(5n) { animation: soundWaves 1.1s infinite alternate 0.4s; }
+    .playing .v-bar:nth-child(7n) { animation: soundWaves 0.6s infinite alternate 0.1s; }
+
+    @keyframes soundWaves {
+      0% { height: 15%; }
+      50% { height: 95%; }
+      100% { height: 35%; }
+    }
+
+    /* Barra de progreso de música */
+    .music-progress-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .music-progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .music-progress-current {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #00ffff, #0088ff);
+      box-shadow: 0 0 10px #00ffff;
+    }
+
+    .music-time-stamps {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7vw;
+      color: #7296c4;
+    }
+
+    /* Botones de Control */
+    .music-controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2vw;
+      margin-top: 0.6vh;
+    }
+
+    .music-ctrl-btn {
+      background: transparent;
+      border: 1px solid rgba(0, 255, 255, 0.4);
+      color: #00ffff;
+      width: 2.8vw;
+      height: 2.8vw;
+      border-radius: 50%;
+      display: grid;
+      place-content: center;
+      cursor: pointer;
+      font-size: 1.1vw;
+      transition: all 0.2s;
+    }
+
+    .music-ctrl-btn:hover {
+      background: rgba(0, 255, 255, 0.2);
+      transform: scale(1.08);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    }
+
+    .music-ctrl-btn.play-pause-master {
+      width: 3.6vw;
+      height: 3.6vw;
+      background: #00ffff;
+      color: #000;
+      border: none;
+      font-size: 1.4vw;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+    }
+
+    .music-ctrl-btn.play-pause-master:hover {
+      background: #ffffff;
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
@@ -732,8 +1114,6 @@
          PANTALLA 1: SPLASH & CARGA CON GLITCH Y DESATURACIÓN
     ============================================== -->
     <section id="screen-1" class="screen active">
-      
-      <!-- Fondo con aberración cromática, glitch y baja saturación -->
       <div class="glitch-backdrop">
         <div class="glitch-layer"></div>
         <div class="glitch-layer layer-cyan"></div>
@@ -746,7 +1126,6 @@
         <div class="subtitle">ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚺ ᛃ ᛇ ᛈ ᛉ ᛋ ᛏ</div>
       </div>
 
-      <!-- Barra de progreso -->
       <div class="loading-box" id="loading-box">
         <div class="progress-bar-bg">
           <div class="progress-bar-fill" id="progress-fill"></div>
@@ -757,7 +1136,6 @@
         </div>
       </div>
 
-      <!-- Botón Iniciar Digital / Cybernetic -->
       <button class="btn-start" id="btn-start" onclick="goToScreen(2)">
         PRESS
       </button>
@@ -768,12 +1146,9 @@
          PANTALLA 2: LOBBY PRINCIPAL MLBB
     ============================================== -->
     <section id="screen-2" class="screen">
-      <!-- Personaje PNG con Resplandor Místico y Animación Flotante -->
       <div class="character-stand"></div>
 
-      <!-- Barra Superior -->
       <header class="top-bar">
-        <!-- Perfil Usuario -->
         <div class="user-profile">
           <div class="avatar-wrapper">
             <img src="https://i.pinimg.com/736x/ca/7b/6e/ca7b6e1cff7e339cb559d1d5de042056.jpg" alt="Avatar">
@@ -785,7 +1160,6 @@
           </div>
         </div>
 
-        <!-- Recursos -->
         <div class="resources-group">
           <div class="resource-chip">
             <span class="resource-icon gold-icon">🪙</span>
@@ -797,21 +1171,18 @@
           </div>
         </div>
 
-        <!-- Ajustes y Utilidades -->
         <div class="system-icons">
           <button class="sys-btn" title="Ranking">🏆 MPL</button>
-          <button class="sys-btn" title="Amigos">👥 Chat</button>
+          <button class="sys-btn" title="Amigos" onclick="goToScreen(4)">👥 Chat</button>
           <button class="sys-btn" title="Correo">✉️ Mail</button>
-          <button class="sys-btn" title="Configuración">⚙️ Settings</button>
+          <button class="sys-btn" title="Configuración">⚙️️ Settings</button>
         </div>
       </header>
 
-      <!-- Bocadillo interactivo de Layla / Doom -->
       <div class="speech-bubble">
         “El infierno me obedece, pues yo soy Doom.”
       </div>
 
-      <!-- Barra lateral de acciones izquierda -->
       <aside class="lobby-sidebar-left">
         <button class="side-action-btn">
           <span>⚖️</span>
@@ -823,16 +1194,14 @@
         </button>
       </aside>
 
-      <!-- Barra Inferior -->
       <footer class="bottom-bar">
         <nav class="bottom-nav-links">
           <div class="nav-item">🛡️ Preparation</div>
-          <div class="nav-item">⚔️ Heroes</div>
+          <div class="nav-item" onclick="goToScreen(4)">⚔️️ Heroes</div>
           <div class="nav-item">🎨 Collection</div>
           <div class="nav-item">🎒 Inventory</div>
         </nav>
 
-        <!-- Botón CLASSIC / ABOUT -->
         <div class="classic-btn-container" onclick="goToScreen(3)">
           <button class="classic-btn">
             <div class="icon-mode">⚔</div>
@@ -844,15 +1213,15 @@
 
 
     <!-- ==============================================
-         PANTALLA 3: LINKS Y ENLACES PERSONALIZADOS
+         PANTALLA 3: LINKS Y ENLACES (MENU PRINCIPAL)
     ============================================== -->
     <section id="screen-3" class="screen">
       <div class="screen-3-container">
         
         <div class="hero-view-panel">
           <div class="match-header">
-            <h2>FRIENDS</h2>
-            <p>Selecciona un enlace o canal de destino</p>
+            <h2>About</h2>
+            <p>Selecciona destino</p>
           </div>
           <button class="btn-back" onclick="goToScreen(2)">
             ← Lobby
@@ -860,23 +1229,26 @@
         </div>
 
         <div class="links-column">
-          <a href="https://tusitio.com/enlace1" target="_blank" rel="noopener noreferrer" class="link-card">
+          <!-- LINK 1: ABRE LA PANTALLA DE FRIENDS (PANTALLA 4) -->
+          <div class="link-card" onclick="goToScreen(4)">
             <div>
-              <div class="title">Canal de Discord / Comunidad</div>
-              <div class="desc">Únete a nuestra sala principal de juego</div>
-            </div>
-            <span class="btn-tag">Entrar</span>
-          </a>
-
-          <a href="https://tusitio.com/enlace2" target="_blank" rel="noopener noreferrer" class="link-card">
-            <div>
-              <div class="title">Guías y Builds de Layla</div>
-              <div class="desc">Equipamiento, emblemas y mejores estrategias</div>
+              <div class="title">ᚫᛗᛁᚷᛟᛋ</div>
+              <div class="desc">Friends </div>
             </div>
             <span class="btn-tag">Ver</span>
-          </a>
+          </div>
 
-          <a href="https://tusitio.com/enlace3" target="_blank" rel="noopener noreferrer" class="link-card">
+          <!-- LINK 2: ABRE EL REPRODUCTOR DIGITAL (PANTALLA 5) -->
+          <div class="link-card" onclick="goToScreen(5)">
+            <div>
+              <div class="title">ᛗᚢᛋᛁᚲᚨ</div>
+              <div class="desc">Music / Cyber Audio Player</div>
+            </div>
+            <span class="btn-tag">Ver</span>
+          </div>
+
+          <!-- LINK 3: EXTERNO -->
+          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="link-card">
             <div>
               <div class="title">Canal de YouTube / Streams</div>
               <div class="desc">Transmisiones en vivo y partidas clasificatorias</div>
@@ -884,7 +1256,8 @@
             <span class="btn-tag">Visitar</span>
           </a>
 
-          <a href="https://tusitio.com/enlace4" target="_blank" rel="noopener noreferrer" class="link-card">
+          <!-- LINK 4: EXTERNO -->
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="link-card">
             <div>
               <div class="title">Perfil de Instagram / X</div>
               <div class="desc">Novedades y contenido diario</div>
@@ -896,12 +1269,251 @@
       </div>
     </section>
 
+
+    <!-- ==============================================
+         PANTALLA 4: SECCIÓN "FRIENDS" (SELECTOR DE HÉROES)
+    ============================================== -->
+    <section id="screen-4" class="screen">
+      
+      <!-- Barra superior idéntica a MLBB -->
+      <div class="friends-topbar">
+        <div class="friends-left-title">
+          <button class="friends-back-btn" onclick="goToScreen(3)">
+            ← VOLVER
+          </button>
+          <div class="friends-title-text"> // FRIENDS</div>
+        </div>
+
+        <div class="friends-filters">
+          <div class="filter-pill">Todas las Líneas ▼</div>
+          <div class="filter-pill">Por defecto ▼</div>
+        </div>
+      </div>
+
+      <!-- Contenedor central -->
+      <div class="friends-main-area">
+        
+        <!-- Sidebar de Roles -->
+        <aside class="roles-sidebar">
+          <div class="role-btn active">Todos</div>
+          <div class="role-btn">Tanque</div>
+          <div class="role-btn">Combatiente</div>
+          <div class="role-btn">Asesino</div>
+          <div class="role-btn">Mago</div>
+          <div class="role-btn">Tirador</div>
+          <div class="role-btn">Apoyo</div>
+        </aside>
+
+        <!-- Cuadrícula de Cartas (Al hacer hover se blurean y revelan el enlace) -->
+        <div class="heroes-grid">
+          
+          <!-- HÉROE 1: EUDORA -->
+          <a href="https://xat.me/iLuguinhoo" target="_blank" rel="noopener noreferrer" class="hero-card">
+            <span class="badge-corner">GRATIS</span>
+            <img class="hero-thumb" src="https://wallpapercave.com/wp/wp13158615.jpg" alt="Eudora">
+            <div class="hero-name-bar">
+              <span>Lugo</span>
+              <div class="hero-icon-class">⚡</div>
+            </div>
+            <div class="hero-hover-overlay">
+              <span class="action-title">@LUGO</span>
+              <span class="action-btn">VISITAR PERFIL</span>
+            </div>
+          </a>
+
+          <!-- HÉROE 2: ZILONG -->
+          <a href="https://tusitio.com/amigo2" target="_blank" rel="noopener noreferrer" class="hero-card">
+            <span class="badge-corner">GRATIS</span>
+            <img class="hero-thumb" src="https://images.wallpapersden.com/image/download/zilong-mobile-legends-bang-bang_a2xqa2qUmZqaraWkpJRobWlmrWdma2Y.jpg" alt="Zilong">
+            <div class="hero-name-bar">
+              <span>Zilong</span>
+              <div class="hero-icon-class">⚔</div>
+            </div>
+            <div class="hero-hover-overlay">
+              <span class="action-title">@ESTELA</span>
+              <span class="action-btn">VISITAR PERFIL</span>
+            </div>
+          </a>
+
+          <!-- HÉROE 3: LAYLA -->
+          <a href="https://tusitio.com/amigo3" target="_blank" rel="noopener noreferrer" class="hero-card">
+            <span class="badge-corner">GRATIS</span>
+            <img class="hero-thumb" src="https://images.wallpapersden.com/image/download/layla-mobile-legends_a2pramyUmZqaraWkpJRobWlmrWdma2Y.jpg" alt="Layla">
+            <div class="hero-name-bar">
+              <span>Layla</span>
+              <div class="hero-icon-class">🎯</div>
+            </div>
+            <div class="hero-hover-overlay">
+              <span class="action-title">@MAR</span>
+              <span class="action-btn">VISITAR PERFIL</span>
+            </div>
+          </a>
+
+          <!-- HÉROE 4: ALICE -->
+          <a href="https://tusitio.com/amigo4" target="_blank" rel="noopener noreferrer" class="hero-card">
+            <span class="badge-corner">GRATIS</span>
+            <img class="hero-thumb" src="https://images.wallpapersden.com/image/download/alice-mobile-legends_a2pqbmeUmZqaraWkpJRobWlmrWdma2Y.jpg" alt="Alice">
+            <div class="hero-name-bar">
+              <span>Alice</span>
+              <div class="hero-icon-class">🦇</div>
+            </div>
+            <div class="hero-hover-overlay">
+              <span class="action-title">@GABI</span>
+              <span class="action-btn">VISITAR PERFIL</span>
+            </div>
+          </a>
+
+          <!-- HÉROE 5: MIYA -->
+          <a href="https://tusitio.com/amigo5" target="_blank" rel="noopener noreferrer" class="hero-card">
+            <span class="badge-corner">GRATIS</span>
+            <img class="hero-thumb" src="https://images.wallpapersden.com/image/download/miya-mobile-legends_a2tqaWiUmZqaraWkpJRobWlmrWdma2Y.jpg" alt="Miya">
+            <div class="hero-name-bar">
+              <span>Miya</span>
+              <div class="hero-icon-class">🏹</div>
+            </div>
+            <div class="hero-hover-overlay">
+              <span class="action-title">@MIYA</span>
+              <span class="action-btn">VISITAR PERFIL</span>
+            </div>
+          </a>
+
+          <!-- HÉROE 6: BALMOND -->
+          <a href="https://tusitio.com/amigo6" target="_blank" rel="noopener noreferrer" class="hero-card">
+            <span class="badge-corner">GRATIS</span>
+            <img class="hero-thumb" src="https://images.wallpapersden.com/image/download/balmond-mobile-legends_a2pqb2mUmZqaraWkpJRobWlmrWdma2Y.jpg" alt="Balmond">
+            <div class="hero-name-bar">
+              <span>Balmond</span>
+              <div class="hero-icon-class">🪓</div>
+            </div>
+            <div class="hero-hover-overlay">
+              <span class="action-title">@BALMOND</span>
+              <span class="action-btn">VISITAR PERFIL</span>
+            </div>
+          </a>
+
+          <!-- HÉROE 7: SABER -->
+          <a href="https://tusitio.com/amigo7" target="_blank" rel="noopener noreferrer" class="hero-card">
+            <span class="badge-corner">GRATIS</span>
+            <img class="hero-thumb" src="https://images.wallpapersden.com/image/download/saber-mobile-legends_a2pqb2qUmZqaraWkpJRobWlmrWdma2Y.jpg" alt="Saber">
+            <div class="hero-name-bar">
+              <span>Saber</span>
+              <div class="hero-icon-class">🗡</div>
+            </div>
+            <div class="hero-hover-overlay">
+              <span class="action-title">@SABER</span>
+              <span class="action-btn">VISITAR PERFIL</span>
+            </div>
+          </a>
+
+          <!-- HÉROE 8: ALUCARD -->
+          <a href="https://tusitio.com/amigo8" target="_blank" rel="noopener noreferrer" class="hero-card">
+            <span class="badge-corner">GRATIS</span>
+            <img class="hero-thumb" src="https://images.wallpapersden.com/image/download/alucard-mobile-legends_a2psaWaUmZqaraWkpJRobWlmrWdma2Y.jpg" alt="Alucard">
+            <div class="hero-name-bar">
+              <span>Alucard</span>
+              <div class="hero-icon-class">⚔</div>
+            </div>
+            <div class="hero-hover-overlay">
+              <span class="action-title">@ALUCARD</span>
+              <span class="action-btn">VISITAR PERFIL</span>
+            </div>
+          </a>
+
+          <!-- HÉROE 9: BRUNO -->
+          <a href="https://tusitio.com/amigo9" target="_blank" rel="noopener noreferrer" class="hero-card">
+            <span class="badge-corner">GRATIS</span>
+            <img class="hero-thumb" src="https://images.wallpapersden.com/image/download/bruno-mobile-legends_a2pqbmaUmZqaraWkpJRobWlmrWdma2Y.jpg" alt="Bruno">
+            <div class="hero-name-bar">
+              <span>Bruno</span>
+              <div class="hero-icon-class">⚽</div>
+            </div>
+            <div class="hero-hover-overlay">
+              <span class="action-title">@BRUNO</span>
+              <span class="action-btn">VISITAR PERFIL</span>
+            </div>
+          </a>
+
+          <!-- HÉROE 10: ALPHA -->
+          <a href="https://tusitio.com/amigo10" target="_blank" rel="noopener noreferrer" class="hero-card">
+            <span class="badge-corner">GRATIS</span>
+            <img class="hero-thumb" src="https://images.wallpapersden.com/image/download/alpha-mobile-legends_a2pqb2eUmZqaraWkpJRobWlmrWdma2Y.jpg" alt="Alpha">
+            <div class="hero-name-bar">
+              <span>Alpha</span>
+              <div class="hero-icon-class">🤖</div>
+            </div>
+            <div class="hero-hover-overlay">
+              <span class="action-title">@ALPHA</span>
+              <span class="action-btn">VISITAR PERFIL</span>
+            </div>
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==============================================
+         PANTALLA 5: SECCIÓN "MUSIC" (REPRODUCTOR CYBERNETIC)
+    ============================================== -->
+    <section id="screen-5" class="screen">
+      
+      <div class="music-player-hud" id="hudContainer">
+        
+        <!-- Header del Reproductor -->
+        <div class="music-hud-header">
+          <div class="music-title-group">
+            <h3>CYBERNETIC AUDIO SYSTEM</h3>
+            <span id="musicTrackName">LATVERIA HYMN // DOOM THEME</span>
+          </div>
+          <button class="music-close-btn" onclick="goToScreen(3)">✕ CERRAR</button>
+        </div>
+
+        <!-- Visualizador Ecualizador de Audio -->
+        <div class="cyber-visualizer" id="equalizerBars">
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+          <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        </div>
+
+        <!-- Barra de Progreso y Tiempo -->
+        <div class="music-progress-wrapper">
+          <div class="music-progress-bar" id="musicProgressBar">
+            <div class="music-progress-current" id="musicProgressFill"></div>
+          </div>
+          <div class="music-time-stamps">
+            <span id="currentTimeDisplay">00:00</span>
+            <span id="totalDurationDisplay">--:--</span>
+          </div>
+        </div>
+
+        <!-- Controles Digitales -->
+        <div class="music-controls-row">
+          <button class="music-ctrl-btn" title="Anterior" onclick="restartAudio()">⏮</button>
+          <button class="music-ctrl-btn play-pause-master" id="masterPlayBtn" onclick="togglePlayMusic()">▶</button>
+          <button class="music-ctrl-btn" title="Reiniciar" onclick="restartAudio()">⏭</button>
+        </div>
+
+      </div>
+
+    </section>
+
   </main>
 
+  <!-- ELEMENTO DE AUDIO (REEMPLAZA EL SRC CON TU ENLACE DIRECTO DE DROPBOX ?raw=1) -->
+  <audio id="cyberAudio" preload="auto">
+    <source src="https://ofgreenvalley.github.io/feid/Se%20Lo%20Juro%20Mor%20-%20Feid%20%28Letra%29.mp3" type="audio/mpeg">
+  </audio>
+
   <!-- ==============================================
-       LÓGICA JS (TRANSICIONES Y CARGA)
+       LÓGICA JS (TRANSICIONES, CARGA Y AUDIO)
   ============================================== -->
   <script>
+    // 1. Simulación de carga en Pantalla 1
     window.addEventListener('DOMContentLoaded', () => {
       const fill = document.getElementById('progress-fill');
       const text = document.getElementById('loading-percentage');
@@ -914,8 +1526,6 @@
         if (progress >= 100) {
           progress = 100;
           clearInterval(interval);
-          
-          // Ocultar barra y revelar botón PRESS digital
           loadBox.style.display = 'none';
           btnStart.style.display = 'inline-block';
         }
@@ -924,13 +1534,86 @@
       }, 50);
     });
 
+    // 2. Navegador de pantallas
     function goToScreen(screenNumber) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       const target = document.getElementById(`screen-${screenNumber}`);
       if (target) {
         target.classList.add('active');
       }
+
+      // Si entra a la pantalla 5 (Música), intenta auto-reproducir
+      if (screenNumber === 5) {
+        playAudio();
+      }
     }
+
+    // 3. Lógica del Reproductor de Audio Cybernetic
+    const audio = document.getElementById('cyberAudio');
+    const masterPlayBtn = document.getElementById('masterPlayBtn');
+    const hudContainer = document.getElementById('hudContainer');
+    const progressFill = document.getElementById('musicProgressFill');
+    const progressBar = document.getElementById('musicProgressBar');
+    const currentTimeDisplay = document.getElementById('currentTimeDisplay');
+    const totalDurationDisplay = document.getElementById('totalDurationDisplay');
+
+    function formatTime(seconds) {
+      if (isNaN(seconds)) return "00:00";
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function playAudio() {
+      audio.play().then(() => {
+        masterPlayBtn.innerText = '❚❚';
+        hudContainer.classList.add('playing');
+      }).catch(err => {
+        console.warn("Reproducción en espera de interacción:", err);
+      });
+    }
+
+    function pauseAudio() {
+      audio.pause();
+      masterPlayBtn.innerText = '▶';
+      hudContainer.classList.remove('playing');
+    }
+
+    function togglePlayMusic() {
+      if (audio.paused) {
+        playAudio();
+      } else {
+        pauseAudio();
+      }
+    }
+
+    function restartAudio() {
+      audio.currentTime = 0;
+      playAudio();
+    }
+
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) {
+        const percent = (audio.currentTime / audio.duration) * 100;
+        progressFill.style.width = percent + '%';
+        currentTimeDisplay.innerText = formatTime(audio.currentTime);
+        totalDurationDisplay.innerText = formatTime(audio.duration);
+      }
+    });
+
+    // Click en la barra para cambiar el segundo de reproducción
+    progressBar.addEventListener('click', (e) => {
+      const rect = progressBar.getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      if (audio.duration) {
+        audio.currentTime = pos * audio.duration;
+      }
+    });
+
+    audio.addEventListener('ended', () => {
+      pauseAudio();
+      progressFill.style.width = '0%';
+    });
   </script>
 </body>
 </html>
