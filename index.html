@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mobile Legends Interface</title>
+  <!-- Fuentes futuristas y monoespaciadas para la estética digital -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700;800&family=Share+Tech+Mono&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================
+       RESET Y CONTENEDOR ESCALABLE (16:9)
+    ========================================= */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #03050a;
+      font-family: 'Rajdhani', sans-serif;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Marco que mantiene la proporción sin deformarse */
+    .game-viewport {
+      position: relative;
+      width: 100vw;
+      height: 56.25vw; /* 16:9 */
+      max-height: 100vh;
+      max-width: 177.78vh;
+      background: #060911;
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.95);
+      overflow: hidden;
+    }
+
+    /* Control de Pantallas */
+    .screen {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .screen.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* =========================================
+       PANTALLA 1: SPLASH GLITCH CON DESATURACIÓN
+    ========================================= */
+    #screen-1 {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 5%;
+      overflow: hidden;
+    }
+
+    /* Fondo con baja saturación y aberración cromática */
+    .glitch-backdrop {
+      position: absolute;
+      inset: -5%;
+      width: 110%;
+      height: 110%;
+      background: radial-gradient(circle at 50% 50%, rgba(10, 20, 30, 0.2) 0%, rgba(3, 6, 12, 0.9) 100%),
+                  url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/af8ed861-a1e7-4979-9745-4a3618ed836c/dmn976s-1511ea17-4084-4659-84bb-8833b934b77a.png/v1/fill/w_1191,h_671,q_70,strp/doctor_doom_wallpaper_6_by_vib16_dmn976s-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi9hZjhlZDg2MS1hMWU3LTQ5NzktOTc0NS00YTM2MThlZDgzNmMvZG1uOTc2cy0xNTExZWExNy00MDg0LTQ2NTktODRiYi04ODMzYjkzNGI3N2EucG5nIiwiaGVpZ2h0IjoiPD03MjEiLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS53YXRlcm1hcmsiXSwid21rIjp7InBhdGgiOiIvd20vYWY4ZWQ4NjEtYTFlNy00OTc5LTk3NDUtNGEzNjE4ZWQ4MzZjL3ZpYjE2LTQucG5nIiwib3BhY2l0eSI6OTUsInByb3BvcnRpb25zIjowLjQ1LCJncmF2aXR5IjoiY2VudGVyIn19.DCILEcPCeuQ6JGK2Jaf3hyRgOJcGU67tBJtNBFcp2QU');
+      background-size: cover;
+      background-position: center;
+      filter: saturate(0.25) contrast(1.25) brightness(0.65);
+      animation: bgGlitch 4.5s infinite steps(2, start);
+      z-index: 1;
+    }
+
+    /* Líneas de escaneo estilo monitor CRT */
+    .crt-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.45) 50%),
+                  linear-gradient(90deg, rgba(0, 255, 200, 0.03), rgba(255, 0, 80, 0.02), rgba(0, 150, 255, 0.03));
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    @keyframes bgGlitch {
+      0%, 88%, 100% {
+        transform: translate(0, 0);
+        filter: saturate(0.25) contrast(1.25) brightness(0.65);
+      }
+      89% {
+        transform: translate(-4px, 2px);
+        filter: saturate(0.15) contrast(1.6) brightness(0.9) drop-shadow(4px 0 #00ffff);
+      }
+      91% {
+        transform: translate(4px, -2px);
+        filter: saturate(0.4) contrast(1.4) brightness(0.5) drop-shadow(-4px 0 #ff0055);
+      }
+      93% {
+        transform: translate(-2px, 0);
+      }
+    }
+
+    .logo-container {
+      position: absolute;
+      top: 20%;
+      text-align: center;
+      z-index: 5;
+    }
+
+    .logo-container .anniversary-number {
+      font-family: 'Teko', sans-serif;
+      font-size: 8vw;
+      line-height: 0.8;
+      letter-spacing: 3px;
+      color: #e5f6ff;
+      text-shadow: 0 0 15px rgba(0, 240, 255, 0.65), 0 0 35px rgba(0, 150, 255, 0.4);
+      animation: textGlitch 3.8s infinite;
+    }
+
+    @keyframes textGlitch {
+      0%, 92%, 100% {
+        transform: skew(0deg);
+        text-shadow: 0 0 15px rgba(0, 240, 255, 0.65);
+      }
+      93% {
+        transform: skew(-5deg);
+        text-shadow: -3px 0 #00f0ff, 3px 0 #ff0055;
+      }
+      95% {
+        transform: skew(4deg);
+        text-shadow: 3px 0 #00f0ff, -3px 0 #ff0055;
+      }
+    }
+
+    .logo-container .subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.1vw;
+      letter-spacing: 8px;
+      color: #7da5c9;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    /* Barra de Carga */
+    .loading-box {
+      width: 55%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 5;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 4px;
+      background: rgba(0, 240, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+    }
+
+    .progress-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #0099ff, #00ffc4);
+      box-shadow: 0 0 12px #00ffc4;
+      transition: width 0.15s ease-out;
+    }
+
+    .loading-info {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8vw;
+      color: rgba(180, 220, 240, 0.7);
+      letter-spacing: 1px;
+    }
+
+    /* =========================================
+       BOTÓN "PRESS": ESTILO DIGITAL / HUD
+    ========================================= */
+    .btn-start {
+      display: none;
+      position: relative;
+      z-index: 10;
+      padding: 0.8vw 3.2vw;
+      background: rgba(4, 16, 26, 0.85);
+      border: 1px solid #00f0ff;
+      clip-path: polygon(15% 0, 100% 0, 85% 100%, 0% 100%);
+      color: #00f0ff;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.4vw;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35), inset 0 0 15px rgba(0, 240, 255, 0.15);
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .btn-start::before {
+      content: '//';
+      position: absolute;
+      left: 10px;
+      font-size: 0.9vw;
+      opacity: 0.6;
+    }
+
+    .btn-start::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 25%;
+      width: 50%;
+      height: 2px;
+      background: #00ffc4;
+      box-shadow: 0 0 8px #00ffc4;
+    }
+
+    .btn-start:hover {
+      background: #00f0ff;
+      color: #04101a;
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.8), 0 0 15px #00ffc4;
+      transform: scale(1.06);
+      animation: btnGlitch 0.25s infinite;
+    }
+
+    .btn-start:hover::before {
+      color: #04101a;
+    }
+
+    @keyframes btnGlitch {
+      0% { transform: scale(1.06) translate(0); }
+      30% { transform: scale(1.06) translate(-2px, 1px); }
+      70% { transform: scale(1.06) translate(2px, -1px); }
+      100% { transform: scale(1.06) translate(0); }
+    }
+
+    /* =========================================
+       PANTALLA 2: LOBBY CON PNG GLITCH & GLOW
+    ========================================= */
+    #screen-2 {
+      background: radial-gradient(circle at 50% 50%, rgba(20, 40, 80, 0.2) 0%, rgba(5, 10, 20, 0.7) 100%),
+                  url('https://images.wallpapersden.com/image/download/doctor-doom-4k_a2xtZ2eUmZqaraWkpJRobWlmrWdma2Y.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* PERSONAJE PNG CON RESPLANDOR, RUIDO Y GLITCH */
+    .character-stand {
+      position: absolute;
+      bottom: -75%;
+      left: 36%;
+      width: 25%;
+      height: 500%;
+      background-image: url('https://i.postimg.cc/C5t84576/dr-doom-png-dr-doom-first-official-look-by-harisx99-dkioxko-414w-2x-png-token-ey-J0e-XAi-Oi-JKV1Qi-L.png');
+      background-size: 250%;
+      background-repeat: no-repeat;
+      background-position: bottom center;
+      pointer-events: none;
+      z-index: 2;
+
+      /* Resplandor multicapa (Glow cian/esmeralda característico de Doom) */
+      filter: drop-shadow(0 0 18px rgba(0, 255, 170, 0.45))
+              drop-shadow(0 0 35px rgba(0, 160, 255, 0.35))
+              drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
+
+      /* Glitch sutil de micro-desplazamiento periódico */
+      animation: pngAuraPulse 3.5s infinite alternate, pngGlitch 6s infinite steps(1);
+    }
+
+    /* Capa de ruido estático sobre el PNG */
+    .character-stand::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.12'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    @keyframes pngAuraPulse {
+      0% {
+        filter: drop-shadow(0 0 15px rgba(0, 255, 170, 0.35))
+                drop-shadow(0 0 30px rgba(0, 160, 255, 0.25))
+                drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
+      }
+      100% {
+        filter: drop-shadow(0 0 28px rgba(0, 255, 170, 0.65))
+                drop-shadow(0 0 45px rgba(0, 200, 255, 0.45))
+                drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
+      }
+    }
+
+    @keyframes pngGlitch {
+      0%, 94%, 100% {
+        transform: translate(0, 0);
+      }
+      95% {
+        transform: translate(-3px, 1px);
+        filter: drop-shadow(-4px 0 #ff0055) drop-shadow(4px 0 #00ffff);
+      }
+      96% {
+        transform: translate(3px, -2px);
+      }
+      97% {
+        transform: translate(0, 0);
+      }
+    }
+
+    /* Barra Superior del Lobby */
+    .top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 9%;
+      background: linear-gradient(180deg, rgba(7, 15, 30, 0.95) 0%, rgba(7, 15, 30, 0.3) 80%, transparent 100%);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2%;
+      z-index: 10;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 2.8vw;
+      height: 2.8vw;
+      border: 2px solid #ecd38c;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    }
+
+    .avatar-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .user-info-text .username {
+      font-size: 1vw;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .user-level-badge {
+      font-size: 0.65vw;
+      background: #3972bb;
+      padding: 1px 4px;
+      border-radius: 3px;
+      color: #fff;
+    }
+
+    .resources-group {
+      display: flex;
+      align-items: center;
+      gap: 1.2vw;
+    }
+
+    .resource-chip {
+      background: rgba(14, 25, 45, 0.75);
+      border: 1px solid rgba(82, 137, 206, 0.4);
+      padding: 3px 12px 3px 6px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85vw;
+      font-weight: 700;
+      color: #e5f1ff;
+    }
+
+    .resource-icon {
+      width: 1.1vw;
+      height: 1.1vw;
+      border-radius: 50%;
+      display: grid;
+      place-content: center;
+      font-size: 0.7vw;
+    }
+
+    .gold-icon { background: #e09f19; color: #3e2600; }
+    .diamond-icon { background: #00c3ff; color: #00364d; }
+
+    .system-icons {
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+    }
+
+    .sys-btn {
+      background: transparent;
+      border: none;
+      color: #92b1db;
+      font-size: 0.9vw;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .sys-btn:hover {
+      color: #ffde6b;
+    }
+
+    .speech-bubble {
+      position: absolute;
+      top: 19%;
+      left: 68%;
+      background: rgba(230, 240, 255, 0.92);
+      color: #273746;
+      border-radius: 12px;
+      padding: 0.8vw 1.2vw;
+      max-width: 20vw;
+      font-size: 0.8vw;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      z-index: 5;
+    }
+
+    .speech-bubble::before {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: 40%;
+      border-width: 6px 8px 6px 0;
+      border-style: solid;
+      border-color: transparent rgba(230, 240, 255, 0.92) transparent transparent;
+    }
+
+    .lobby-sidebar-left {
+      position: absolute;
+      left: 1.2%;
+      top: 25%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5vh;
+      z-index: 10;
+    }
+
+    .side-action-btn {
+      background: rgba(16, 27, 49, 0.75);
+      border: 1px solid rgba(82, 137, 206, 0.5);
+      border-radius: 8px;
+      padding: 0.5vw 0.8vw;
+      color: #c9e0ff;
+      font-size: 0.75vw;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .side-action-btn:hover {
+      background: rgba(30, 60, 110, 0.9);
+      border-color: #ffd043;
+      color: #fff;
+      transform: translateX(4px);
+    }
+
+    .bottom-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 12%;
+      background: linear-gradient(0deg, rgba(5, 11, 23, 0.95) 0%, rgba(5, 11, 23, 0.4) 75%, transparent 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2%;
+      z-index: 10;
+    }
+
+    .bottom-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5vw;
+    }
+
+    .nav-item {
+      color: #9ab4d6;
+      font-size: 0.95vw;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .nav-item:hover {
+      color: #ffd043;
+      transform: translateY(-2px);
+    }
+
+    .classic-btn-container {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .classic-btn {
+      position: relative;
+      background: linear-gradient(135deg, #ffe277 0%, #e0a31b 45%, #b37305 100%);
+      padding: 0.9vw 3.5vw 0.9vw 2.5vw;
+      border: none;
+      clip-path: polygon(15% 0, 100% 0, 85% 100%, 0% 100%);
+      box-shadow: 0 0 25px rgba(235, 172, 33, 0.5);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+    }
+
+    .classic-btn::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      right: 2px;
+      bottom: 2px;
+      clip-path: polygon(15% 0, 100% 0, 85% 100%, 0% 100%);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      pointer-events: none;
+    }
+
+    .classic-btn:hover {
+      transform: scale(1.04);
+      filter: brightness(1.1);
+      box-shadow: 0 0 35px rgba(255, 196, 0, 0.8);
+    }
+
+    .classic-btn .icon-mode {
+      width: 1.8vw;
+      height: 1.8vw;
+      background: #623e00;
+      border-radius: 4px;
+      display: grid;
+      place-content: center;
+      color: #ffd752;
+      font-size: 1vw;
+    }
+
+    .classic-btn .label {
+      font-family: 'Teko', sans-serif;
+      font-size: 2.2vw;
+      font-weight: 700;
+      color: #2e1700;
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+
+    /* =========================================
+       PANTALLA 3: LINKS / SELECCIÓN DE HÉROE
+    ========================================= */
+    #screen-3 {
+      background: radial-gradient(circle at 60% 50%, rgba(10, 25, 55, 0.4) 0%, rgba(3, 7, 15, 0.9) 100%),
+                  url('https://u.cubeupload.com/Eradicater/87e51937283878e8fd72.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .screen-3-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 2.5%;
+    }
+
+    .hero-view-panel {
+      width: 45%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .match-header h2 {
+      font-family: 'Teko', sans-serif;
+      font-size: 3.5vw;
+      color: #ffd043;
+      letter-spacing: 1.5px;
+      line-height: 1;
+    }
+
+    .match-header p {
+      font-size: 1vw;
+      color: #92b8ea;
+      margin-top: -4px;
+    }
+
+    .btn-back {
+      align-self: flex-start;
+      background: rgba(18, 32, 59, 0.8);
+      border: 1px solid rgba(82, 137, 206, 0.5);
+      color: #c9e0ff;
+      padding: 0.6vw 1.6vw;
+      border-radius: 4px;
+      font-size: 0.9vw;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-back:hover {
+      background: #1e3a68;
+      color: #ffd043;
+    }
+
+    .links-column {
+      width: 45%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2vh;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .links-column::-webkit-scrollbar {
+      width: 4px;
+    }
+    .links-column::-webkit-scrollbar-thumb {
+      background: #3c6596;
+      border-radius: 4px;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(90deg, rgba(16, 29, 53, 0.85) 0%, rgba(22, 42, 79, 0.6) 100%);
+      border: 1px solid rgba(82, 137, 206, 0.35);
+      border-radius: 6px;
+      padding: 1vw 1.4vw;
+      text-decoration: none;
+      color: #fff;
+      transition: all 0.25s ease;
+    }
+
+    .link-card:hover {
+      transform: translateX(-6px);
+      border-color: #ffd043;
+      background: linear-gradient(90deg, rgba(22, 43, 80, 0.95) 0%, rgba(35, 68, 128, 0.8) 100%);
+      box-shadow: 0 0 15px rgba(255, 208, 67, 0.3);
+    }
+
+    .link-card .title {
+      font-size: 1.1vw;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .link-card .desc {
+      font-size: 0.75vw;
+      color: #92b8ea;
+    }
+
+    .link-card .btn-tag {
+      background: #ffd043;
+      color: #1e1300;
+      font-size: 0.8vw;
+      font-weight: 800;
+      padding: 0.3vw 0.8vw;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VIEWPORT 16:9 FIJO -->
+  <main class="game-viewport">
+
+    <!-- ==============================================
+         PANTALLA 1: SPLASH & CARGA (CON GLITCH Y DESATURACIÓN)
+    ============================================== -->
+    <section id="screen-1" class="screen active">
+      <!-- Capas de fondo con glitch y CRT -->
+      <div class="glitch-backdrop"></div>
+      <div class="crt-overlay"></div>
+
+      <div class="logo-container">
+        <div class="anniversary-number">אֲבַדוֹן</div>
+        <div class="subtitle">ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚺ ᛃ ᛇ ᛈ ᛉ ᛋ ᛏ</div>
+      </div>
+
+      <!-- Barra de progreso -->
+      <div class="loading-box" id="loading-box">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+        <div class="loading-info">
+          <span>SYSTEM READY // ACCEPT TERMS</span>
+          <span id="loading-percentage">0%</span>
+        </div>
+      </div>
+
+      <!-- Botón Iniciar Digital/Sci-Fi -->
+      <button class="btn-start" id="btn-start" onclick="goToScreen(2)">
+        PRESS
+      </button>
+    </section>
+
+
+    <!-- ==============================================
+         PANTALLA 2: LOBBY PRINCIPAL (PNG CON GLOW, NOISE Y GLITCH)
+    ============================================== -->
+    <section id="screen-2" class="screen">
+      <!-- Personaje decorativo PNG -->
+      <div class="character-stand"></div>
+
+      <!-- Barra Superior -->
+      <header class="top-bar">
+        <div class="user-profile">
+          <div class="avatar-wrapper">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" alt="Avatar">
+          </div>
+          <div class="user-info-text">
+            <div class="username">
+              Doom <span class="user-level-badge">Lv. 30</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="resources-group">
+          <div class="resource-chip">
+            <span class="resource-icon gold-icon">🪙</span>
+            <span>398,045</span>
+          </div>
+          <div class="resource-chip">
+            <span class="resource-icon diamond-icon">💎</span>
+            <span>139</span>
+          </div>
+        </div>
+
+        <div class="system-icons">
+          <button class="sys-btn" title="Ranking">🏆 MPL</button>
+          <button class="sys-btn" title="Amigos">👥 Chat</button>
+          <button class="sys-btn" title="Correo">✉️ Mail</button>
+          <button class="sys-btn" title="Configuración">⚙️ Settings</button>
+        </div>
+      </header>
+
+      <div class="speech-bubble">
+        “El infierno me obedece, pues yo soy Doom.”
+      </div>
+
+      <aside class="lobby-sidebar-left">
+        <button class="side-action-btn">
+          <span>⚖️</span>
+          <span>Shop</span>
+        </button>
+        <button class="side-action-btn">
+          <span>🚩</span>
+          <span>Events</span>
+        </button>
+      </aside>
+
+      <footer class="bottom-bar">
+        <nav class="bottom-nav-links">
+          <div class="nav-item">🛡️ Preparation</div>
+          <div class="nav-item">⚔️ Heroes</div>
+          <div class="nav-item">🎨 Collection</div>
+          <div class="nav-item">🎒 Inventory</div>
+        </nav>
+
+        <div class="classic-btn-container" onclick="goToScreen(3)">
+          <button class="classic-btn">
+            <div class="icon-mode">⚔</div>
+            <span class="label">ABOUT</span>
+          </button>
+        </div>
+      </footer>
+    </section>
+
+
+    <!-- ==============================================
+         PANTALLA 3: LINKS Y ENLACES PERSONALIZADOS
+    ============================================== -->
+    <section id="screen-3" class="screen">
+      <div class="screen-3-container">
+        
+        <div class="hero-view-panel">
+          <div class="match-header">
+            <h2>FRIENDS</h2>
+            <p>Selecciona un enlace o canal de destino</p>
+          </div>
+          <button class="btn-back" onclick="goToScreen(2)">
+            ← Lobby
+          </button>
+        </div>
+
+        <div class="links-column">
+          <a href="https://tusitio.com/enlace1" target="_blank" rel="noopener noreferrer" class="link-card">
+            <div>
+              <div class="title">Canal de Discord / Comunidad</div>
+              <div class="desc">Únete a nuestra sala principal de juego</div>
+            </div>
+            <span class="btn-tag">Entrar</span>
+          </a>
+
+          <a href="https://tusitio.com/enlace2" target="_blank" rel="noopener noreferrer" class="link-card">
+            <div>
+              <div class="title">Guías y Builds de Layla</div>
+              <div class="desc">Equipamiento, emblemas y mejores estrategias</div>
+            </div>
+            <span class="btn-tag">Ver</span>
+          </a>
+
+          <a href="https://tusitio.com/enlace3" target="_blank" rel="noopener noreferrer" class="link-card">
+            <div>
+              <div class="title">Canal de YouTube / Streams</div>
+              <div class="desc">Transmisiones en vivo y partidas clasificatorias</div>
+            </div>
+            <span class="btn-tag">Visitar</span>
+          </a>
+
+          <a href="https://tusitio.com/enlace4" target="_blank" rel="noopener noreferrer" class="link-card">
+            <div>
+              <div class="title">Perfil de Instagram / X</div>
+              <div class="desc">Novedades y contenido diario</div>
+            </div>
+            <span class="btn-tag">Seguir</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==============================================
+       LÓGICA JS (TRANSICIONES Y CARGA)
+  ============================================== -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const fill = document.getElementById('progress-fill');
+      const text = document.getElementById('loading-percentage');
+      const loadBox = document.getElementById('loading-box');
+      const btnStart = document.getElementById('btn-start');
+      
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += Math.floor(Math.random() * 5) + 2;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+          
+          loadBox.style.display = 'none';
+          btnStart.style.display = 'inline-block';
+        }
+        fill.style.width = progress + '%';
+        text.innerText = progress + '%';
+      }, 50);
+    });
+
+    function goToScreen(screenNumber) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(`screen-${screenNumber}`);
+      if (target) {
+        target.classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>
