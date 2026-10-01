@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Mobile Legends Interface</title>
-  <!-- Fuentes futuristas y monoespaciadas para la estética digital -->
+  <!-- Fuentes de estilo futurista, gaming y digital -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700;800&family=Share+Tech+Mono&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700;800&family=Teko:wght@600;700&display=swap" rel="stylesheet">
   <style>
     /* =========================================
        RESET Y CONTENEDOR ESCALABLE (16:9)
@@ -21,7 +21,7 @@
     }
 
     body {
-      background-color: #03050a;
+      background-color: #03060c;
       font-family: 'Rajdhani', sans-serif;
       color: #fff;
       display: flex;
@@ -31,14 +31,14 @@
       overflow: hidden;
     }
 
-    /* Marco que mantiene la proporción sin deformarse */
+    /* Marco que mantiene la proporción 16:9 sin deformarse */
     .game-viewport {
       position: relative;
       width: 100vw;
       height: 56.25vw; /* 16:9 */
       max-height: 100vh;
       max-width: 177.78vh;
-      background: #060911;
+      background: #080d16;
       box-shadow: 0 0 60px rgba(0, 0, 0, 0.95);
       overflow: hidden;
     }
@@ -61,11 +61,10 @@
       pointer-events: auto;
     }
 
-    /* =========================================
-       PANTALLA 1: SPLASH GLITCH CON DESATURACIÓN
-    ========================================= */
+    /* ========================================================
+       PANTALLA 1: CARGA + EFECTO GLITCH + BAJA SATURACIÓN
+    ======================================================== */
     #screen-1 {
-      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -74,89 +73,106 @@
       overflow: hidden;
     }
 
-    /* Fondo con baja saturación y aberración cromática */
+    /* Capas para el fondo desaturado con efecto Glitch */
     .glitch-backdrop {
       position: absolute;
-      inset: -5%;
-      width: 110%;
-      height: 110%;
-      background: radial-gradient(circle at 50% 50%, rgba(10, 20, 30, 0.2) 0%, rgba(3, 6, 12, 0.9) 100%),
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      background-color: #050a12;
+    }
+
+    .glitch-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 40%, rgba(20, 45, 80, 0.35) 0%, rgba(3, 6, 12, 0.92) 100%),
                   url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/af8ed861-a1e7-4979-9745-4a3618ed836c/dmn976s-1511ea17-4084-4659-84bb-8833b934b77a.png/v1/fill/w_1191,h_671,q_70,strp/doctor_doom_wallpaper_6_by_vib16_dmn976s-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi9hZjhlZDg2MS1hMWU3LTQ5NzktOTc0NS00YTM2MThlZDgzNmMvZG1uOTc2cy0xNTExZWExNy00MDg0LTQ2NTktODRiYi04ODMzYjkzNGI3N2EucG5nIiwiaGVpZ2h0IjoiPD03MjEiLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS53YXRlcm1hcmsiXSwid21rIjp7InBhdGgiOiIvd20vYWY4ZWQ4NjEtYTFlNy00OTc5LTk3NDUtNGEzNjE4ZWQ4MzZjL3ZpYjE2LTQucG5nIiwib3BhY2l0eSI6OTUsInByb3BvcnRpb25zIjowLjQ1LCJncmF2aXR5IjoiY2VudGVyIn19.DCILEcPCeuQ6JGK2Jaf3hyRgOJcGU67tBJtNBFcp2QU');
       background-size: cover;
       background-position: center;
-      filter: saturate(0.25) contrast(1.25) brightness(0.65);
-      animation: bgGlitch 4.5s infinite steps(2, start);
-      z-index: 1;
+      /* BAJA SATURACIÓN Y TONO OSCURO */
+      filter: saturate(0.18) contrast(1.2) brightness(0.68);
     }
 
-    /* Líneas de escaneo estilo monitor CRT */
-    .crt-overlay {
+    /* Capa de aberración cromática Cyan */
+    .glitch-layer.layer-cyan {
+      opacity: 0.55;
+      mix-blend-mode: screen;
+      filter: saturate(0.2) contrast(1.4) drop-shadow(-4px 0 #00ffff) brightness(0.75);
+      animation: bgGlitchCyan 3.2s infinite steps(2, start);
+    }
+
+    /* Capa de aberración cromática Roja / Magenta */
+    .glitch-layer.layer-red {
+      opacity: 0.45;
+      mix-blend-mode: screen;
+      filter: saturate(0.2) contrast(1.4) drop-shadow(4px 0 #ff0055) brightness(0.75);
+      animation: bgGlitchRed 3.8s infinite steps(2, start);
+    }
+
+    /* Líneas de escaneo digital / monitor */
+    .glitch-scanlines {
       position: absolute;
       inset: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.45) 50%),
-                  linear-gradient(90deg, rgba(0, 255, 200, 0.03), rgba(255, 0, 80, 0.02), rgba(0, 150, 255, 0.03));
-      background-size: 100% 3px, 6px 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 0px,
+        rgba(255, 255, 255, 0) 2px,
+        rgba(0, 0, 0, 0.3) 3px,
+        rgba(0, 0, 0, 0.3) 4px
+      );
       pointer-events: none;
       z-index: 2;
     }
 
-    @keyframes bgGlitch {
-      0%, 88%, 100% {
-        transform: translate(0, 0);
-        filter: saturate(0.25) contrast(1.25) brightness(0.65);
-      }
-      89% {
-        transform: translate(-4px, 2px);
-        filter: saturate(0.15) contrast(1.6) brightness(0.9) drop-shadow(4px 0 #00ffff);
-      }
-      91% {
-        transform: translate(4px, -2px);
-        filter: saturate(0.4) contrast(1.4) brightness(0.5) drop-shadow(-4px 0 #ff0055);
-      }
-      93% {
-        transform: translate(-2px, 0);
-      }
+    @keyframes bgGlitchCyan {
+      0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      14% { clip-path: inset(18% 0 68% 0); transform: translate(-4px, 2px); }
+      16% { clip-path: inset(80% 0 6% 0); transform: translate(3px, -2px); }
+      24% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      62% { clip-path: inset(42% 0 40% 0); transform: translate(-5px, 1px); }
+      64% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      88% { clip-path: inset(70% 0 12% 0); transform: translate(4px, 1px); }
+      90% { clip-path: inset(0 0 0 0); transform: translate(0); }
     }
 
+    @keyframes bgGlitchRed {
+      0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      19% { clip-path: inset(62% 0 22% 0); transform: translate(4px, -2px); }
+      21% { clip-path: inset(8% 0 78% 0); transform: translate(-3px, 2px); }
+      32% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      74% { clip-path: inset(28% 0 52% 0); transform: translate(4px, 3px); }
+      76% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    }
+
+    /* Logo Superior */
     .logo-container {
       position: absolute;
-      top: 20%;
+      top: 22%;
       text-align: center;
-      z-index: 5;
+      z-index: 3;
     }
 
     .logo-container .anniversary-number {
       font-family: 'Teko', sans-serif;
       font-size: 8vw;
       line-height: 0.8;
-      letter-spacing: 3px;
-      color: #e5f6ff;
-      text-shadow: 0 0 15px rgba(0, 240, 255, 0.65), 0 0 35px rgba(0, 150, 255, 0.4);
-      animation: textGlitch 3.8s infinite;
-    }
-
-    @keyframes textGlitch {
-      0%, 92%, 100% {
-        transform: skew(0deg);
-        text-shadow: 0 0 15px rgba(0, 240, 255, 0.65);
-      }
-      93% {
-        transform: skew(-5deg);
-        text-shadow: -3px 0 #00f0ff, 3px 0 #ff0055;
-      }
-      95% {
-        transform: skew(4deg);
-        text-shadow: 3px 0 #00f0ff, -3px 0 #ff0055;
-      }
+      letter-spacing: 2px;
+      background: linear-gradient(180deg, #ffffff 0%, #b8e2ff 45%, #2a94f3 65%, #104e9c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(42, 148, 243, 0.8));
     }
 
     .logo-container .subtitle {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 1.1vw;
-      letter-spacing: 8px;
-      color: #7da5c9;
+      font-size: 1.6vw;
+      letter-spacing: 4px;
+      color: #9fe2ff;
       text-transform: uppercase;
-      opacity: 0.85;
+      font-weight: 700;
     }
 
     /* Barra de Carga */
@@ -166,24 +182,23 @@
       flex-direction: column;
       align-items: center;
       gap: 8px;
-      z-index: 5;
+      z-index: 3;
     }
 
     .progress-bar-bg {
       width: 100%;
-      height: 4px;
-      background: rgba(0, 240, 255, 0.1);
-      border-radius: 2px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
       overflow: hidden;
-      border: 1px solid rgba(0, 240, 255, 0.35);
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+      border: 1px solid rgba(0, 255, 255, 0.25);
     }
 
     .progress-bar-fill {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, #0099ff, #00ffc4);
-      box-shadow: 0 0 12px #00ffc4;
+      background: linear-gradient(90deg, #00ffff, #0088ff);
+      box-shadow: 0 0 12px #00ffff;
       transition: width 0.15s ease-out;
     }
 
@@ -191,76 +206,88 @@
       width: 100%;
       display: flex;
       justify-content: space-between;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.8vw;
-      color: rgba(180, 220, 240, 0.7);
-      letter-spacing: 1px;
+      font-size: 0.85vw;
+      color: rgba(255, 255, 255, 0.6);
     }
 
-    /* =========================================
-       BOTÓN "PRESS": ESTILO DIGITAL / HUD
-    ========================================= */
+    /* ========================================================
+       BOTÓN "PRESS" DIGITAL / CYBERPUNK (HUD CYBERNETIC)
+    ======================================================== */
     .btn-start {
       display: none;
       position: relative;
       z-index: 10;
-      padding: 0.8vw 3.2vw;
-      background: rgba(4, 16, 26, 0.85);
-      border: 1px solid #00f0ff;
-      clip-path: polygon(15% 0, 100% 0, 85% 100%, 0% 100%);
-      color: #00f0ff;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 1.4vw;
-      font-weight: 700;
+      padding: 0.75vw 3.2vw;
+      background: linear-gradient(135deg, rgba(0, 255, 200, 0.12) 0%, rgba(0, 40, 80, 0.85) 100%);
+      color: #00ffff;
+      font-family: 'Orbitron', monospace;
+      font-size: 1.3vw;
+      font-weight: 900;
       letter-spacing: 5px;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35), inset 0 0 15px rgba(0, 240, 255, 0.15);
-      transition: all 0.2s ease;
+      border: 1px solid #00ffff;
       outline: none;
+      clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.35), inset 0 0 15px rgba(0, 255, 255, 0.2);
+      transition: all 0.25s ease;
+      animation: digitalGlitchPulse 3.5s infinite;
     }
 
+    /* Líneas de mira en las esquinas */
     .btn-start::before {
-      content: '//';
+      content: "";
       position: absolute;
-      left: 10px;
-      font-size: 0.9vw;
-      opacity: 0.6;
+      top: -2px;
+      left: -2px;
+      width: 8px;
+      height: 8px;
+      border-top: 2px solid #fff;
+      border-left: 2px solid #fff;
     }
 
     .btn-start::after {
-      content: '';
+      content: "";
       position: absolute;
-      bottom: 2px;
-      left: 25%;
-      width: 50%;
-      height: 2px;
-      background: #00ffc4;
-      box-shadow: 0 0 8px #00ffc4;
+      bottom: -2px;
+      right: -2px;
+      width: 8px;
+      height: 8px;
+      border-bottom: 2px solid #fff;
+      border-right: 2px solid #fff;
     }
 
+    /* Efecto hover */
     .btn-start:hover {
-      background: #00f0ff;
-      color: #04101a;
-      box-shadow: 0 0 35px rgba(0, 240, 255, 0.8), 0 0 15px #00ffc4;
+      background: linear-gradient(135deg, rgba(0, 255, 200, 0.3) 0%, rgba(0, 120, 220, 0.95) 100%);
+      color: #ffffff;
       transform: scale(1.06);
-      animation: btnGlitch 0.25s infinite;
+      box-shadow: 0 0 35px rgba(0, 255, 255, 0.8), inset 0 0 20px rgba(0, 255, 255, 0.5);
+      border-color: #ffffff;
     }
 
-    .btn-start:hover::before {
-      color: #04101a;
+    @keyframes digitalGlitchPulse {
+      0%, 88%, 100% {
+        transform: translate(0);
+        text-shadow: 0 0 8px #00ffff;
+      }
+      90% {
+        transform: translate(-3px, 1px);
+        text-shadow: -2px 0 #ff0055, 2px 0 #00ffff;
+      }
+      92% {
+        transform: translate(3px, -1px);
+        text-shadow: 2px 0 #ff0055, -2px 0 #00ffff;
+      }
+      94% {
+        transform: translate(0);
+        text-shadow: 0 0 8px #00ffff;
+      }
     }
 
-    @keyframes btnGlitch {
-      0% { transform: scale(1.06) translate(0); }
-      30% { transform: scale(1.06) translate(-2px, 1px); }
-      70% { transform: scale(1.06) translate(2px, -1px); }
-      100% { transform: scale(1.06) translate(0); }
-    }
-
-    /* =========================================
-       PANTALLA 2: LOBBY CON PNG GLITCH & GLOW
-    ========================================= */
+    /* ========================================================
+       PANTALLA 2: LOBBY PRINCIPAL (MLBB)
+    ======================================================== */
     #screen-2 {
       background: radial-gradient(circle at 50% 50%, rgba(20, 40, 80, 0.2) 0%, rgba(5, 10, 20, 0.7) 100%),
                   url('https://images.wallpapersden.com/image/download/doctor-doom-4k_a2xtZ2eUmZqaraWkpJRobWlmrWdma2Y.jpg');
@@ -268,7 +295,9 @@
       background-position: center;
     }
 
-    /* PERSONAJE PNG CON RESPLANDOR, RUIDO Y GLITCH */
+    /* ========================================================
+       PNG DEL PERSONAJE: RESPLANDOR + EFECTO DE FLOTAR
+    ======================================================== */
     .character-stand {
       position: absolute;
       bottom: -75%;
@@ -282,52 +311,33 @@
       pointer-events: none;
       z-index: 2;
 
-      /* Resplandor multicapa (Glow cian/esmeralda característico de Doom) */
-      filter: drop-shadow(0 0 18px rgba(0, 255, 170, 0.45))
-              drop-shadow(0 0 35px rgba(0, 160, 255, 0.35))
-              drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
+      /* RESPLANDOR MÍSTICO / GLOW MULTICAPA */
+      filter: drop-shadow(0 0 20px rgba(43, 216, 120, 0.65))
+              drop-shadow(0 0 45px rgba(22, 140, 75, 0.45))
+              drop-shadow(0 15px 30px rgba(0, 0, 0, 0.9));
 
-      /* Glitch sutil de micro-desplazamiento periódico */
-      animation: pngAuraPulse 3.5s infinite alternate, pngGlitch 6s infinite steps(1);
+      /* ANIMACIÓN DE FLOTACIÓN SUAVE */
+      animation: floatDoom 4.2s ease-in-out infinite alternate;
+      will-change: transform, filter;
     }
 
-    /* Capa de ruido estático sobre el PNG */
-    .character-stand::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.12'/%3E%3C/svg%3E");
-      mix-blend-mode: overlay;
-      pointer-events: none;
-      opacity: 0.7;
-    }
-
-    @keyframes pngAuraPulse {
+    @keyframes floatDoom {
       0% {
-        filter: drop-shadow(0 0 15px rgba(0, 255, 170, 0.35))
-                drop-shadow(0 0 30px rgba(0, 160, 255, 0.25))
-                drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
+        transform: translateY(0px) rotate(0deg);
+        filter: drop-shadow(0 0 16px rgba(43, 216, 120, 0.5))
+                drop-shadow(0 0 35px rgba(22, 140, 75, 0.35))
+                drop-shadow(0 15px 30px rgba(0, 0, 0, 0.9));
+      }
+      50% {
+        filter: drop-shadow(0 0 28px rgba(43, 255, 140, 0.85))
+                drop-shadow(0 0 60px rgba(22, 180, 95, 0.55))
+                drop-shadow(0 20px 40px rgba(0, 0, 0, 0.95));
       }
       100% {
-        filter: drop-shadow(0 0 28px rgba(0, 255, 170, 0.65))
-                drop-shadow(0 0 45px rgba(0, 200, 255, 0.45))
-                drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
-      }
-    }
-
-    @keyframes pngGlitch {
-      0%, 94%, 100% {
-        transform: translate(0, 0);
-      }
-      95% {
-        transform: translate(-3px, 1px);
-        filter: drop-shadow(-4px 0 #ff0055) drop-shadow(4px 0 #00ffff);
-      }
-      96% {
-        transform: translate(3px, -2px);
-      }
-      97% {
-        transform: translate(0, 0);
+        transform: translateY(-16px) rotate(0.4deg);
+        filter: drop-shadow(0 0 22px rgba(43, 216, 120, 0.65))
+                drop-shadow(0 0 45px rgba(22, 140, 75, 0.45))
+                drop-shadow(0 25px 45px rgba(0, 0, 0, 0.9));
       }
     }
 
@@ -385,6 +395,7 @@
       color: #fff;
     }
 
+    /* Recursos (Oro, Diamantes) */
     .resources-group {
       display: flex;
       align-items: center;
@@ -416,6 +427,7 @@
     .gold-icon { background: #e09f19; color: #3e2600; }
     .diamond-icon { background: #00c3ff; color: #00364d; }
 
+    /* Iconos del Sistema */
     .system-icons {
       display: flex;
       align-items: center;
@@ -439,6 +451,7 @@
       color: #ffde6b;
     }
 
+    /* Bocadillo de diálogo de Doom */
     .speech-bubble {
       position: absolute;
       top: 19%;
@@ -464,6 +477,7 @@
       border-color: transparent rgba(230, 240, 255, 0.92) transparent transparent;
     }
 
+    /* Menú Lateral Izquierdo */
     .lobby-sidebar-left {
       position: absolute;
       left: 1.2%;
@@ -497,6 +511,7 @@
       transform: translateX(4px);
     }
 
+    /* Barra Inferior */
     .bottom-bar {
       position: absolute;
       bottom: 0;
@@ -534,6 +549,7 @@
       transform: translateY(-2px);
     }
 
+    /* BOTÓN DERECHO INFERIOR: ABOUT */
     .classic-btn-container {
       position: relative;
       cursor: pointer;
@@ -592,7 +608,7 @@
     }
 
     /* =========================================
-       PANTALLA 3: LINKS / SELECCIÓN DE HÉROE
+       PANTALLA 3: LINKS / FRIENDS
     ========================================= */
     #screen-3 {
       background: radial-gradient(circle at 60% 50%, rgba(10, 25, 55, 0.4) 0%, rgba(3, 7, 15, 0.9) 100%),
@@ -713,12 +729,17 @@
   <main class="game-viewport">
 
     <!-- ==============================================
-         PANTALLA 1: SPLASH & CARGA (CON GLITCH Y DESATURACIÓN)
+         PANTALLA 1: SPLASH & CARGA CON GLITCH Y DESATURACIÓN
     ============================================== -->
     <section id="screen-1" class="screen active">
-      <!-- Capas de fondo con glitch y CRT -->
-      <div class="glitch-backdrop"></div>
-      <div class="crt-overlay"></div>
+      
+      <!-- Fondo con aberración cromática, glitch y baja saturación -->
+      <div class="glitch-backdrop">
+        <div class="glitch-layer"></div>
+        <div class="glitch-layer layer-cyan"></div>
+        <div class="glitch-layer layer-red"></div>
+        <div class="glitch-scanlines"></div>
+      </div>
 
       <div class="logo-container">
         <div class="anniversary-number">אֲבַדוֹן</div>
@@ -731,12 +752,12 @@
           <div class="progress-bar-fill" id="progress-fill"></div>
         </div>
         <div class="loading-info">
-          <span>SYSTEM READY // ACCEPT TERMS</span>
+          <span>I have read and agree to the Terms and Privacy Policy</span>
           <span id="loading-percentage">0%</span>
         </div>
       </div>
 
-      <!-- Botón Iniciar Digital/Sci-Fi -->
+      <!-- Botón Iniciar Digital / Cybernetic -->
       <button class="btn-start" id="btn-start" onclick="goToScreen(2)">
         PRESS
       </button>
@@ -744,14 +765,15 @@
 
 
     <!-- ==============================================
-         PANTALLA 2: LOBBY PRINCIPAL (PNG CON GLOW, NOISE Y GLITCH)
+         PANTALLA 2: LOBBY PRINCIPAL MLBB
     ============================================== -->
     <section id="screen-2" class="screen">
-      <!-- Personaje decorativo PNG -->
+      <!-- Personaje PNG con Resplandor Místico y Animación Flotante -->
       <div class="character-stand"></div>
 
       <!-- Barra Superior -->
       <header class="top-bar">
+        <!-- Perfil Usuario -->
         <div class="user-profile">
           <div class="avatar-wrapper">
             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" alt="Avatar">
@@ -763,6 +785,7 @@
           </div>
         </div>
 
+        <!-- Recursos -->
         <div class="resources-group">
           <div class="resource-chip">
             <span class="resource-icon gold-icon">🪙</span>
@@ -774,6 +797,7 @@
           </div>
         </div>
 
+        <!-- Ajustes y Utilidades -->
         <div class="system-icons">
           <button class="sys-btn" title="Ranking">🏆 MPL</button>
           <button class="sys-btn" title="Amigos">👥 Chat</button>
@@ -782,10 +806,12 @@
         </div>
       </header>
 
+      <!-- Bocadillo interactivo de Layla / Doom -->
       <div class="speech-bubble">
         “El infierno me obedece, pues yo soy Doom.”
       </div>
 
+      <!-- Barra lateral de acciones izquierda -->
       <aside class="lobby-sidebar-left">
         <button class="side-action-btn">
           <span>⚖️</span>
@@ -797,6 +823,7 @@
         </button>
       </aside>
 
+      <!-- Barra Inferior -->
       <footer class="bottom-bar">
         <nav class="bottom-nav-links">
           <div class="nav-item">🛡️ Preparation</div>
@@ -805,6 +832,7 @@
           <div class="nav-item">🎒 Inventory</div>
         </nav>
 
+        <!-- Botón CLASSIC / ABOUT -->
         <div class="classic-btn-container" onclick="goToScreen(3)">
           <button class="classic-btn">
             <div class="icon-mode">⚔</div>
@@ -887,6 +915,7 @@
           progress = 100;
           clearInterval(interval);
           
+          // Ocultar barra y revelar botón PRESS digital
           loadBox.style.display = 'none';
           btnStart.style.display = 'inline-block';
         }
